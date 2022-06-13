@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+docker run --rm -ti \
+    --network "${NETWORK:-host}" \
+    --volume ~/.config/composer:/tmp/composer \
+    --volume "$(pwd)":/var/www/html \
+    --env XDG_CONFIG_HOME=/tmp \
+    -w /var/www/html \
+    ghcr.io/josepostiga/infrastructure/php:8.1-dev-fpm \
+    php -d memory_limit=-1 "$@"
