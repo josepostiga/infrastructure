@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  traefik:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.entrypoints=http"
+      - "traefik.http.routers.api.rule=Host(`traefik.test`)"
+      - "traefik.http.routers.api.service=api@internal"
+    image: traefik:v2.6
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./.docker/traefik/configuration:/configuration:ro
+      - ./.docker/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+    restart: unless-stopped
+    networks:
+      - web
+
+networks:
+  web:
+    external: true
