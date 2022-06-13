@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  memcached:
+    image: memcached:1-alpine
+    expose:
+      - 11211
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:14-alpine
+    expose:
+      - 5432
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: root
+      POSTGRES_DB: project
+    command: postgres -c log_min_duration_statement=0
+    restart: unless-stopped
+
+  redis:
+    image: redis:5.0.6-alpine
+    expose:
+      - 6379
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
+volumes:
+  db_data:

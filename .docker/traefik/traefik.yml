@@ -1,0 +1,16 @@
+providers:
+  docker:
+    exposedByDefault: false
+    network: web
+
+api:
+  dashboard: true
+  debug: false
+
+entryPoints:
+  http:
+    address: ":80"
+  https:
+    address: ":443"
+
+accessLog: {}

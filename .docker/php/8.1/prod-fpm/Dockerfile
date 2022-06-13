@@ -1,6 +1,7 @@
 FROM ghcr.io/josepostiga/infrastructure/php:8.1-base-fpm
 
 RUN apk --no-cache add \
+    cronie \
     freetype-dev \
     git \
     imagemagick \
@@ -18,6 +19,7 @@ RUN apk --no-cache add \
     openssh-client \
     patch \
     unzip \
+    vim \
     zlib-dev
 
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
@@ -38,6 +40,8 @@ RUN docker-php-ext-enable \
     imagick \
     redis \
     sockets
+
+RUN touch /var/log/cron.log
 
 COPY zz-docker.conf /usr/local/etc/php-fpm.d/zz-docker.conf
 

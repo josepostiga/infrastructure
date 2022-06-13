@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+  kafka:
+    image: confluentinc/cp-kafka:6.2.2
+    environment:
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://infraspeak.kafka:9092
+      - KAFKA_BROKER_ID=1
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_ZOOKEEPER_CONNECT=infraspeak.zookeeper:2181
+    expose:
+      - 9092
+    volumes:
+      - broker_data:/var/lib/kafka/data
+      - broker_secrets:/etc/kafka/secrets
+    restart: unless-stopped
+    networks:
+      - event-brokers
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
+      - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+    expose:
+      - 8080
+    networks:
+      - event-brokers
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:6.2.2
+    environment:
+      - ZOOKEEPER_CLIENT_PORT=2181
+      - ZOOKEEPER_SYNC_LIMIT=2
+      - ZOOKEEPER_TICK_TIME=2000
+    expose:
+      - 2181
+    volumes:
+      - zookeeper_data:/var/lib/zookeeper/data
+      - zookeeper_log:/var/lib/zookeeper/log
+    restart: unless-stopped
+    networks:
+      - event-brokers
+
+volumes:
+  broker_data:
+  broker_secrets:
+  zookeeper_data:
+  zookeeper_log:
+
+networks:
+  event-brokers:
