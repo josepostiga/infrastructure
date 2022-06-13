@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+php /tmp/composer/vendor/bin/laravel "$@"
