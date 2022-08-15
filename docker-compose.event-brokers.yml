@@ -2,12 +2,13 @@ version: "3.8"
 
 services:
   kafka:
-    image: confluentinc/cp-kafka:6.2.2
+    image: confluentinc/cp-kafka:7.2.1
+    pull_policy: always
     environment:
-      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://infraspeak.kafka:9092
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
       - KAFKA_BROKER_ID=1
       - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
-      - KAFKA_ZOOKEEPER_CONNECT=infraspeak.zookeeper:2181
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
     expose:
       - 9092
     volumes:
@@ -19,6 +20,7 @@ services:
 
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
+    pull_policy: always
     environment:
       - KAFKA_CLUSTERS_0_NAME=local
       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092
@@ -29,7 +31,8 @@ services:
       - event-brokers
 
   zookeeper:
-    image: confluentinc/cp-zookeeper:6.2.2
+    image: confluentinc/cp-zookeeper:7.2.1
+    pull_policy: always
     environment:
       - ZOOKEEPER_CLIENT_PORT=2181
       - ZOOKEEPER_SYNC_LIMIT=2
@@ -38,7 +41,6 @@ services:
       - 2181
     volumes:
       - zookeeper_data:/var/lib/zookeeper/data
-      - zookeeper_log:/var/lib/zookeeper/log
     restart: unless-stopped
     networks:
       - event-brokers
@@ -47,7 +49,6 @@ volumes:
   broker_data:
   broker_secrets:
   zookeeper_data:
-  zookeeper_log:
 
 networks:
   event-brokers:
