@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-if [ ! -d "$HOME/.local/bin" ]; then
-  ln -s "$PWD/.bin" "$HOME/.local/bin"
-  source "$HOME/.profile"
-fi

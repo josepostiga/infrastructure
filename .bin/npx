@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-docker run --rm -ti \
-    --network "${NETWORK:-host}" \
-    --volume "$(pwd)":/app \
-    -w /app \
-    ghcr.io/josepostiga/infrastructure/node:18-alpine \
-    npx "$@"
