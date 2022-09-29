@@ -3,6 +3,7 @@ version: "3.8"
 services:
   sonarqube:
     image: sonarqube:community
+    pull_policy: always
     platform: linux/amd64
     depends_on:
       - sonarqube_db
@@ -20,13 +21,13 @@ services:
       - "9000:9000"
 
   sonarqube_db:
-    image: postgres:12
+    image: postgres:14-alpine
+    pull_policy: always
     environment:
       POSTGRES_USER: sonar
       POSTGRES_PASSWORD: sonar
     volumes:
       - sonarqube_db_data:/var/lib/postgresql/data
-    command: postgres -c log_min_duration_statement=0
 
 volumes:
   sonarqube_data:
